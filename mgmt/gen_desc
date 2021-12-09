@@ -4,7 +4,7 @@
 root="`dirname $(pwd)`"
 summaries=($( ls $root/.desc|grep '\.md' ))
 
-sed '6,$d' $root/README.md > /tmp/README.md
+sed '5,$d' $root/README.md > /tmp/README.md
 for i in ${summaries[@]}
 do
   printf " - [$i](.desc/$i)  \n" >> /tmp/README.md

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Declarations
+root="`dirname $(pwd)`"
+summaries=($( ls $root/.desc|grep '\.md' ))
+
+sed '6,$d' $root/README.md > /tmp/README.md
+for i in ${summaries[@]}
+do
+  printf " - [$i](.desc/$i)  \n" >> /tmp/README.md
+done
+printf "Update?\n   OLD                                              NEW  \n------------------------------------------------------------------\n"
+diff -y $root/README.md /tmp/README.md
+read -p '(y/n):  ' inpt 
+
+# Save / Cleanup
+[[ $inpt =~ 'y' ]]&& (mv -f /tmp/README.md $root/) || ( rm /tmp/README.md )

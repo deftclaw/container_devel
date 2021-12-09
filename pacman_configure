@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Update makepkg.conf to this computer's core count
+ct_cores=$(( $(lscpu|grep '^CPU(s)'|awk '{print $NF}') + 1 ))
+cat /etc/makepkg.conf |
+ sed "s/^#MAKEFLAGS=\"-j[[:digit:]]\+\"/ MAKEFLAGS=\"-j$ct_cores\"/" |
+  tee /tmp/makepkg.conf
+
+# Update pacman.conf to download more files at once (default 20)
+cat /etc/pacman.conf |
+ sed 's/^ ParallelDownloads = [[:digit:]]\+/ ParallelDownloads = 20/'|
+  tee /tmp/pacman.conf
+
+[[ $(cat /tmp/pacman.conf|grep 'ParallelDownloads') ]] \
+  && (echo 'pDownloads specified') \
+  || (sed "38 i ParallelDownloads = 20" /etc/pacman.conf > /tmp/pacman.conf)
+
+[[ -f /tmp/makepkg.conf ]]&& mv -fv /tmp/makepkg.conf /etc/
+[[ -f /tmp/pacman.conf ]]&& mv -fv /tmp/pacman.conf /etc/

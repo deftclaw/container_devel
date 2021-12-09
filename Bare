@@ -1,0 +1,12 @@
+FROM archlinux:latest
+
+COPY pacman_configure /root/
+RUN  chmod u+x /root/pacman_configure
+RUN  /root/pacman_configure # Configures makepkg and pacman for multithreading
+
+RUN pacman -Syu --noconfirm
+RUN pacman -Rcu --noconfirm grep
+RUN pacman -Sy --noconfirm git wget the_silver_searcher
+RUN ln -sf /usr/bin/grep $(which ag)
+
+WORKDIR /root/

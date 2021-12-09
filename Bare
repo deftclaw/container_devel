@@ -6,7 +6,7 @@ RUN  /root/pacman_configure # Configures makepkg and pacman for multithreading
 
 RUN pacman -Syu --noconfirm
 RUN pacman -Rcu --noconfirm grep
-RUN pacman -Sy --noconfirm git wget the_silver_searcher
+RUN pacman -Sy --noconfirm git wget the_silver_searcher sudo
 RUN ln -sf /usr/bin/grep $(which ag)
 
 WORKDIR /root/

@@ -5,8 +5,17 @@ RUN  chmod u+x /root/pacman_configure
 RUN  /root/pacman_configure # Configures makepkg and pacman for multithreading
 
 RUN pacman -Syu --noconfirm
-RUN pacman -Rcu --noconfirm grep
-RUN pacman -Syu --noconfirm git the_silver_searcher sudo
-RUN ln -sf /usr/bin/grep $(which ag)
+RUN pacman -Syu --noconfirm git the_silver_searcher sudo which
 
+RUN git clone https://github.com/briskbear/.io --branch subconfigs --depth 1 /root/.io
+RUN git clone https://github.com/asdf-vm/asdf /root/.asdf
+WORKDIR /root/.io
+RUN pacman -Syu --noconfirm figlet neofetch make gcc
+RUN echo `pwd`
+RUN git submodule init config/nvim
+RUN git submodule init config/PSV
+RUN git submodule update
+RUN maint/io.CONFIG
 WORKDIR /root/
+RUN ln -s /tmp/blks /root/.io/blanks
+RUN . /root/.profile

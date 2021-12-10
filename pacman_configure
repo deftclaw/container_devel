@@ -4,6 +4,7 @@
 ct_cores=$(( $(lscpu|grep '^CPU(s)'|awk '{print $NF}') + 1 ))
 cat /etc/makepkg.conf |
  sed "s/^#MAKEFLAGS=\"-j[[:digit:]]\+\"/ MAKEFLAGS=\"-j$ct_cores\"/" |
+ sed "s/^#RUSTFLAGS/ RUSTFLAGS/"|
   tee /tmp/makepkg.conf
 
 # Update pacman.conf to download more files at once (default 20)
